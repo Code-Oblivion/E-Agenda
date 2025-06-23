@@ -19,11 +19,6 @@ public class Item
         status = statusItem.Concluido;
     }
 
-    public void Pendente() 
-    {
-        status = statusItem.Pendente;
-    }
-
     public enum statusItem
     {
         Pendente,
