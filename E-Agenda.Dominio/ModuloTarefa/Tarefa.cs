@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using E_Agenda.Dominio.Compartilhado;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace E_Agenda.Dominio.ModuloTarefa;
 
@@ -11,9 +10,19 @@ public class Tarefa : EntidadeBase<Tarefa>
     public DateTime DataCriacao { get; set; }
     public DateTime DataConclusao { get; set; }
     public Status StatusTarefa { get; set; }
-    public decimal PercentualConcluido { get; set; }
     public List<Item> Itens { get; set; }
+    public decimal PercentualConcluido 
+    {
+        get 
+        {
+            if (Itens.Count == 0)
+                return 0;
 
+            int itensConcluidos = Itens.Count(item => item.status == Item.statusItem.Concluido);
+
+            return(decimal)itensConcluidos / Itens.Count * 100;
+        }
+    }
 
     public Tarefa() 
     {
@@ -27,7 +36,6 @@ public class Tarefa : EntidadeBase<Tarefa>
         NivelPrioridade = nivelPrioridade;
         DataCriacao = DateTime.Now;
         StatusTarefa = Status.Pendente;
-        PercentualConcluido = 0;
     }
 
     public override void Atualizar(Tarefa registroEditado)
@@ -36,14 +44,21 @@ public class Tarefa : EntidadeBase<Tarefa>
         NivelPrioridade = registroEditado.NivelPrioridade;
     }
 
-    public void AdicionarItem(Item item)
+    public void AdicionarItem(string titulo)
     {
+        var item = new Item(titulo);
+
         Itens.Add(item);
     }
 
     public void RemoverItem(Item item)
     {
         Itens.Remove(item);
+    }
+
+    public void ConcluirItem(Item item)
+    {
+        item.Concluir();
     }
 
     public void ConcluirTarefa()
@@ -55,21 +70,6 @@ public class Tarefa : EntidadeBase<Tarefa>
         {
             item.Concluir();
         }
-
-        AtualizarPercentualConcluido();
-    }
-
-    public void AtualizarPercentualConcluido()
-    {
-        if (Itens.Count == 0)
-        {
-            PercentualConcluido = 0;
-            return;
-        }
-
-        int itensConcluidos = Itens.Count(item => item.status == Item.statusItem.Concluido);
-
-        PercentualConcluido = (decimal)itensConcluidos / Itens.Count * 100;
     }
 
     public enum Prioridade
