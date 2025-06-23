@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using E_Agenda.Dominio.Compartilhado;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace E_Agenda.Dominio.ModuloTarefa;
 
@@ -18,14 +17,12 @@ public class Tarefa : EntidadeBase<Tarefa>
         {
             if (Itens.Count == 0)
                 return 0;
-            
 
             int itensConcluidos = Itens.Count(item => item.status == Item.statusItem.Concluido);
 
             return(decimal)itensConcluidos / Itens.Count * 100;
         }
     }
-
 
     public Tarefa() 
     {
@@ -57,7 +54,6 @@ public class Tarefa : EntidadeBase<Tarefa>
     public void RemoverItem(Item item)
     {
         Itens.Remove(item);
-
     }
 
     public void ConcluirItem(Item item)
@@ -74,9 +70,7 @@ public class Tarefa : EntidadeBase<Tarefa>
         {
             item.Concluir();
         }
-
     }
-
 
     public enum Prioridade
     {
