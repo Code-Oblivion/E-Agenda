@@ -15,6 +15,13 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         }
+                        @if (ViewData.ModelState["HorarioInvalido"]?.Errors.Count > 0)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+                                @ViewData.ModelState["HorarioInvalido"]!.Errors.First().ErrorMessage
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
 
                         <div class="form-group d-grid gap-2 mt-3">
                             <label asp-for="Assunto" class="control-label fs-5">Assunto*</label>
@@ -58,7 +65,7 @@
 
                         <div class="form-group d-grid gap-2 mt-3">
                             <label id="localOuLinkLabel" class="control-label fs-5">Local*</label>
-                            <input id="localOuLinkInput" name="LocalOuLink" class="form-control imput-form" placeholder="Digite um local..." />
+                            <input asp-for="LocalOuLink" id="localOuLinkInput" class="form-control imput-form" placeholder="Digite um local..." />
                             <span asp-validation-for="LocalOuLink" class="text-danger"></span>
                         </div>
 

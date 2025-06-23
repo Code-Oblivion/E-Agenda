@@ -56,20 +56,21 @@ public class CompromissoController : Controller
         ViewBag.Header = "Cadastro de Compromisso";
 
         var registros = repositorioCompromisso.ObterTodos();
+        var contatos = repositorioContato.ObterTodos();
 
-        foreach (var item in registros)
-        {
-            if (registros.FirstOrDefault(c => c.DataOcorrencia == cadastrarVM.DataOcorrencia && c.HoraInicio < cadastrarVM.HoraTermino && c.HoraTermino > cadastrarVM.HoraInicio) != null)
-            {
-                ModelState.AddModelError("CadastroUnico", "Já existe um compromisso no horário selecionado");
-                break;
-            }
-        }
+        if (cadastrarVM.HoraTermino <= cadastrarVM.HoraInicio)
+            ModelState.AddModelError("HorarioInvalido", "O horário de término deve ser após o horário de início.");
+
+        if (registros.Any(c => c.DataOcorrencia == cadastrarVM.DataOcorrencia && c.HoraInicio < cadastrarVM.HoraTermino && c.HoraTermino > cadastrarVM.HoraInicio))
+            ModelState.AddModelError("CadastroUnico", "Já existe um compromisso no horário selecionado");
 
         if (!ModelState.IsValid)
+        {
+            cadastrarVM.ContatosDisponiveis.Clear();
+            foreach (var c in contatos)
+                cadastrarVM.ContatosDisponiveis.Add(new SelecionarContatoViewModel(c.Id, c.Nome));
             return View(cadastrarVM);
-
-        var contatos = repositorioContato.ObterTodos();
+        }
 
         var entidade = cadastrarVM.ParaEntidade(contatos);
 
@@ -88,12 +89,8 @@ public class CompromissoController : Controller
 
         var contatos = repositorioContato.ObterTodos();
 
-        string localOuLink;
+        var editarVM = new EditarCompromissoViewModel(registroSelecionado.Id, registroSelecionado.Assunto, registroSelecionado.DataOcorrencia, registroSelecionado.HoraInicio, registroSelecionado.HoraTermino, registroSelecionado.Tipo, registroSelecionado.LocalOuLink, registroSelecionado.Contato?.Id, contatos);
 
-        if (registroSelecionado.Tipo == TipoCompromisso.Remoto) localOuLink = registroSelecionado.Link;
-        else localOuLink = registroSelecionado.Local;
-
-        var editarVM = new EditarCompromissoViewModel(registroSelecionado.Id, registroSelecionado.Assunto, registroSelecionado.DataOcorrencia, registroSelecionado.HoraInicio, registroSelecionado.HoraTermino, registroSelecionado.Tipo, localOuLink, registroSelecionado.Id, contatos);
         return View(editarVM);
     }
 
@@ -107,17 +104,19 @@ public class CompromissoController : Controller
         var registros = repositorioCompromisso.ObterTodos();
         var contatos = repositorioContato.ObterTodos();
 
-        foreach (var item in registros)
-        {
-            if (registros.FirstOrDefault(c => c.DataOcorrencia == editarVM.DataOcorrencia && c.HoraInicio < editarVM.HoraTermino && c.HoraTermino > editarVM.HoraInicio && !item.Id.Equals(id)) != null)
-            {
-                ModelState.AddModelError("CadastroUnico", "Já existe um compromisso no horário selecionado");
-                break;
-            }
-        }
+        if (editarVM.HoraTermino <= editarVM.HoraInicio)
+            ModelState.AddModelError("HorarioInvalido", "O horário de término deve ser após o horário de início.");
+
+        if (registros.Any(c => c.DataOcorrencia == editarVM.DataOcorrencia && c.HoraInicio < editarVM.HoraTermino && c.HoraTermino > editarVM.HoraInicio && !c.Id.Equals(id)))
+            ModelState.AddModelError("CadastroUnico", "Já existe um compromisso no horário selecionado");
 
         if (!ModelState.IsValid)
+        {
+            editarVM.ContatosDisponiveis.Clear();
+            foreach (var c in contatos)
+                editarVM.ContatosDisponiveis.Add(new SelecionarContatoViewModel(c.Id, c.Nome));
             return View(editarVM);
+        }
 
         var entidadeEditada = editarVM.ParaEntidade(contatos);
 
