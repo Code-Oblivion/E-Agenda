@@ -23,6 +23,9 @@ public class TarefaController : Controller
 
     public IActionResult Index(string status)
     {
+        ViewBag.Title = "Tarefas";
+        ViewBag.Header = "Visualizando Tarefas";
+
         List<Tarefa> tarefas;
 
         switch (status)
@@ -43,6 +46,9 @@ public class TarefaController : Controller
     [HttpGet("cadastrar")]
     public IActionResult Cadastrar()
     {
+        ViewBag.Title = "Tarefas | Cadastrar";
+        ViewBag.Header = "Cadastro de Tarefa";
+
         var CriarTarefaVM = new CriarTarefaViewModel();
 
         return View(CriarTarefaVM);
@@ -52,6 +58,9 @@ public class TarefaController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Cadastrar(CriarTarefaViewModel CriarTarefaVM)
     {
+        ViewBag.Title = "Tarefas | Cadastrar";
+        ViewBag.Header = "Cadastro de Tarefa";
+
         if (!ModelState.IsValid)
         {
             return View(CriarTarefaVM);
@@ -67,6 +76,9 @@ public class TarefaController : Controller
     [HttpGet("editar/{id:guid}")]
     public IActionResult Editar(Guid id)
     {
+        ViewBag.Title = "Tarefas | Editar";
+        ViewBag.Header = "Edição de Tarefa";
+
         var registroSelecionado = _repositorioTarefa.ObterPorId(id);
 
         var editarVM = new EditarTarefaViewModel(
@@ -82,6 +94,9 @@ public class TarefaController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Editar(Guid id, EditarTarefaViewModel editarVM)
     {
+        ViewBag.Title = "Tarefas | Editar";
+        ViewBag.Header = "Edição de Tarefa";
+
         var registros = _repositorioTarefa.ObterTodos();
 
         if (!ModelState.IsValid)
@@ -97,6 +112,9 @@ public class TarefaController : Controller
     [HttpGet("excluir/{id:guid}")]
     public IActionResult Excluir(Guid id)
     {
+        ViewBag.Title = "Tarefas | Excluir";
+        ViewBag.Header = "Exclusão de Tarefa";
+
         var registroSelecionado = _repositorioTarefa.ObterPorId(id);
 
         var excluirVM = new ExcluirTarefaViewModel(registroSelecionado.Id, registroSelecionado.Titulo);
@@ -109,6 +127,9 @@ public class TarefaController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult ExcluirConfirmado(Guid id)
     {
+        ViewBag.Title = "Tarefas | Excluir";
+        ViewBag.Header = "Exclusão de Tarefa";
+
         _repositorioTarefa.Excluir(id);
 
         return RedirectToAction(nameof(Index));
@@ -117,6 +138,9 @@ public class TarefaController : Controller
     [HttpGet, Route("/tarefas/{id:guid}/gerenciar")]
     public IActionResult Gerenciar(Guid id)
     {
+        ViewBag.Title = "Tarefas | Gerenciar";
+        ViewBag.Header = "Gerenciamento de Tarefa";
+
         var tarefaSelecionada = _repositorioTarefa.ObterPorId(id);
 
         var gerenciarItensViewModel = new GerenciarTarefaViewModel(tarefaSelecionada);
