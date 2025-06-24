@@ -4,8 +4,12 @@
 ![banner](E-Agenda.WebApp/wwwroot/imagens/banner1.png)
 
 # 📌 Demonstração
- Navegações e cadastros
->![Demonstração do Projeto](https://i.imgur.com/qd1FlMw.gif)
+## Navegações
+![Demonstração do Projeto](https://i.imgur.com/j2SKPO4.gif)
+## Cadastro de Compromisso
+![Demonstração do Projeto](https://i.imgur.com/b2ws2xq.gif)
+## Cadastros de Tarefa
+![Demonstração do Projeto](https://i.imgur.com/hsUC7TA.gif)
 
 # 💡 Índice
 
