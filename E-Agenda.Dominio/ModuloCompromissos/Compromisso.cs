@@ -12,9 +12,7 @@ public class Compromisso : EntidadeBase<Compromisso>
     public string LocalOuLink { get; set; }
     public Contato? Contato { get; set; } = null;
 
-    public Compromisso()
-    {
-    }
+    public Compromisso() { }
     public Compromisso(string assunto, DateOnly dataOcorrencia, TimeOnly inicio, TimeOnly termino, bool ehRemoto, string localOuLink, Contato? contato) : this()
     {
         Id = Guid.NewGuid();
