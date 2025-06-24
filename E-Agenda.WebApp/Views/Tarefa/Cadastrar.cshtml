@@ -1,0 +1,37 @@
+﻿@using static E_Agenda.Dominio.ModuloTarefa.Tarefa
+@model CriarTarefaViewModel  
+
+<div class="container">  
+	<div class="row justify-content-center my-5">  
+		<div class="col-md-8">  
+			<div class="card card-form rounded-4 border-0">  
+				<div class="card-body p-md-5">  
+					<form asp-action="Cadastrar">  
+						<h3 class="text-center fw-bold">Formulário de Cadastro de Tarefa</h3>  
+
+						<div class="form-group d-grid gap-2 mt-3">  
+							<label asp-for="Titulo" class="control-label fs-5">Titulo*</label>  
+							<input asp-for="Titulo" class="form-control imput-form" placeholder="Digite o titulo..." />  
+							<span asp-validation-for="Titulo" class="text-danger"></span>  
+						</div>  
+
+						<div class="form-group d-grid gap-2 mt-3">  
+							<label asp-for="Prioridade" class="control-label fs-5">Prioridade*</label>  
+							<select asp-for="Prioridade" asp-items="@Html.GetEnumSelectList<Prioridade>()" class="form-select imput-form"></select>
+							<span asp-validation-for="Prioridade" class="text-danger"></span>
+						</div>  
+
+						<div class="form-group d-flex align-items-center justify-content-center justify-content-md-end gap-3 mt-5">
+							<a role="button" href="/tarefas" class="btn btn-secondary rounded-3 px-5" title="Voltar a página de tarefas">Voltar</a>
+							<button type="submit" class="btn btn-success rounded-3 px-5" title="Salvar dados">Salvar</button>
+						</div>
+					</form>  
+				</div>  
+			</div>  
+		</div>  
+	</div>  
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

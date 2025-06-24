@@ -1,0 +1,90 @@
+﻿@using static E_Agenda.Dominio.ModuloTarefa.Tarefa
+@model VisualizarTarefaViewModel
+
+@{
+	string? statusAtual = Context.Request.Query["status"];
+}
+
+<div class="container">
+	<div class="row gx-2 gy-2">
+		<div class="mb-4">
+			<div class="d-flex flex-wrap gap-2">
+				<a asp-action="Index" asp-route-status="default"
+				   class="btn selec @((statusAtual == "default") ? "ativo" : "")">
+					Tarefas
+				</a>
+				<a asp-action="Index" asp-route-status="pendente"
+				   class="btn selec @((statusAtual == "pendente") ? "ativo" : "")">
+					Tarefas Pendentes
+				</a>
+				<a asp-action="Index" asp-route-status="concluida"
+				   class="btn selec @((statusAtual == "concluida") ? "ativo" : "")">
+					Tarefas Concluídas
+				</a>
+				<form method="get" asp-action="Index" class="d-inline">
+					<select name="status"
+							class="form-select w-auto selec-prioridade @(statusAtual == "alta" || statusAtual == "normal" || statusAtual == "baixa" ? "ativo" : "")"
+							onchange="this.form.submit()">
+						<option value="">Filtrar por Prioridade</option>
+						<option value="alta" selected="@(statusAtual == "alta")">Alta</option>
+						<option value="normal" selected="@(statusAtual == "normal")">Normal</option>
+						<option value="baixa" selected="@(statusAtual == "baixa")">Baixa</option>
+					</select>
+				</form>
+			</div>
+		</div>
+		<div class="col-12 col-md-6 col-lg-3">
+			<a asp-action="cadastrar" class="card card-visualizar h-100 text-decoration-none" title="Cadastrar nova tarefa">
+				<div class="text-center card-body justify-content-center ">
+					<h3 class="fw-semibold my-4">Cadastre novas tarefas</h3>
+					<div class="mb-2 card-cadastrar-icone">
+						<i class="bi bi-plus-circle"></i>
+					</div>
+				</div>
+			</a>
+		</div>
+		@foreach (var item in Model.Tarefas)
+		{
+			<div class="col-12 col-md-6 col-lg-3">
+				<div class="card card-visualizar ">
+					<div class="card-body">
+						<p class="card-text "><span class="fw-semibold">Título: </span>@(item.Titulo.Length > 18 ? item.Titulo.Substring(0, 18) + "..." : item.Titulo)</p>
+						<p class="card-text "><span class="fw-semibold">Prioridade: </span> @item.NivelPrioridade</p>
+						<p class="card-text "><span class="fw-semibold">% Concluído: </span> @item.PercentualConcluido</p>
+						<p class="card-text "><span class="fw-semibold">Status: </span> @item.StatusTarefa</p>
+						@if (item.StatusTarefa == Status.Concluida)
+						{
+							<p class="card-text"><span class="fw-semibold">Data de Conclusão:</span> @item.DataConclusao?.ToShortDateString()</p>
+						}
+						else
+						{
+							<p class="card-text"><span class="fw-semibold">Data de criação: </span> @item.DataCriacao.ToShortDateString()</p>
+						}
+
+						<span class="d-flex gap-1 justify-content-end">
+							@if (item.StatusTarefa == Status.Concluida)
+							{
+								<a asp-action="excluir" asp-route-id="@item.Id" class="btn btn-danger" title="Excluir">
+									<i class="bi bi-trash"></i>
+								</a>
+							}
+							else
+							{
+								<a asp-action="gerenciar" asp-route-id="@item.Id" class="btn btn-primary" title="Gerenciar">
+									<i class="bi bi-list-check"></i>
+								</a>
+								<a asp-action="editar" asp-route-id="@item.Id" class="btn btn-primary" title="Editar">
+									<i class="bi bi-pencil-square"></i>
+								</a>
+								<a asp-action="excluir" asp-route-id="@item.Id" class="btn btn-danger" title="Excluir">
+									<i class="bi bi-trash"></i>
+								</a>
+							}
+
+						</span>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
