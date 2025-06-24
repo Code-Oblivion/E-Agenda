@@ -93,7 +93,7 @@ body {
 
 .card-visualizar {
     background-color: var(--fundo-card);
-    color: var(--texto);    
+    color: var(--texto);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1.5px 3px rgba(0,0,0,0.06);
 }
 
@@ -106,6 +106,7 @@ body {
     background-color: var(--fundo);
     color: var(--texto);
 }
+
     .imput-form:focus {
         background-color: var(--fundo-card);
         color: var(--texto);
@@ -118,6 +119,43 @@ body {
 .card-cadastrar-icone-categoria {
     font-size: 2rem
 }
+
+.selec-prioridade {
+    background-color: var(--fundo);
+    display: inline-block;
+    min-width: 180px;
+    border-color: var(--texto);
+    color: var(--texto);
+}
+
+    .selec-prioridade.ativo {
+        background-color: var(--navbar);
+        color: white;
+        border-color: var(--texto);
+    }
+
+.selec {
+    border-color: var(--texto);
+    color: var(--texto);
+}
+
+    .selec.ativo {
+        background-color: var(--navbar);
+        color: white;
+        border-color: var(--texto);
+    }
+
+.btn-adicionar {
+    background-color: var(--navbar);
+    color: white;
+    border-color: var(--texto);
+}
+
+    .btn-adicionar:hover {
+        background-color: var(--navbar);
+        color: white;
+        border-color: var(--texto);
+    }
 
 @media (max-width: 767.98px) {
     .custom-navbar {
