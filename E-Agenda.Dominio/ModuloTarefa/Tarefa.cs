@@ -61,6 +61,22 @@ public class Tarefa : EntidadeBase<Tarefa>
         item.Concluir();
     }
 
+    public Item? ObterItem(Guid idItem)
+    {
+        foreach (var i in Itens)
+        {
+            if (idItem.Equals(i.Id))
+                return i;
+        }
+
+        return null;
+    }
+
+    public void ReabrirItem(Item item)
+    {
+        item.Reabrir();
+    }
+
     public void ConcluirTarefa()
     {
         StatusTarefa = Status.Concluida;

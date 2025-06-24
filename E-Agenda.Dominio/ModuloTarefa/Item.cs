@@ -1,4 +1,6 @@
-﻿namespace E_Agenda.Dominio.ModuloTarefa;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace E_Agenda.Dominio.ModuloTarefa;
 
 public class Item
 {
@@ -19,9 +21,17 @@ public class Item
         status = statusItem.Concluido;
     }
 
+    public void Reabrir()
+    {
+        status = statusItem.Pendente;
+    }
+
     public enum statusItem
     {
+        [Display(Name = "Pendente")]
         Pendente,
+
+        [Display(Name = "Concluído")]
         Concluido
     }
 }
