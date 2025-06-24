@@ -5,7 +5,7 @@
 
 # 📌 Demonstração
 ## Navegações
-![Demonstração do Projeto](https://i.imgur.com/j2SKPO4.gif)
+![Demonstração do Projeto](https://i.imgur.com/wl9ARv5.gif)
 ## Cadastro de Compromisso
 ![Demonstração do Projeto](https://i.imgur.com/b2ws2xq.gif)
 ## Cadastros de Tarefa
