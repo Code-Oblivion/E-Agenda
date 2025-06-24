@@ -1,5 +1,7 @@
-﻿using E_Agenda.Dominio.ModuloContatos;
+﻿using E_Agenda.Dominio.ModuloCompromissos;
+using E_Agenda.Dominio.ModuloContatos;
 using E_Agenda.Infraestrutura.Compartilhado;
+using E_Agenda.Infraestrutura.ModuloCompromissos;
 using E_Agenda.Infraestrutura.ModuloContatos;
 using E_Agenda.WebApp.Extensions;
 using E_Agenda.WebApp.Models;
@@ -12,11 +14,13 @@ namespace E_Agenda.WebApp.Controllers
     {
         private readonly ContextoDados contextoDados;
         private readonly IRepositorioContato repositorioContato;
+        private readonly IRepositorioCompromisso repositoriocompromisso;
 
         public ContatoController()
         {
             contextoDados = new ContextoDados(true);
             repositorioContato = new RepositorioContato(contextoDados);
+            repositoriocompromisso = new RepositorioCompromisso(contextoDados);
         }
 
         public IActionResult Index()
@@ -147,10 +151,26 @@ namespace E_Agenda.WebApp.Controllers
 
         [HttpPost("excluir/{id:guid}")]
         [ValidateAntiForgeryToken]
-        public IActionResult ExcluirConfirmado(Guid id) //Adicionar validação de exclusão do enunciado "Não permitir excluir um contato caso tenha compromissos vinculados"
+        public IActionResult ExcluirConfirmado(Guid id)
         {
             ViewBag.Title = "Contatos | Excluir";
             ViewBag.Header = "Exclusão de Contato";
+
+            var contato = repositorioContato.ObterPorId(id);
+
+            var compromissos = repositoriocompromisso.ObterTodos();
+
+            foreach (var c in compromissos) 
+            {
+                if(c.Contato.Id == contato.Id)
+                {
+                    ModelState.AddModelError("Exclusão", "Não é possível excluir uma contato com compromissos vinculados");
+
+                    var excluirVM = new ExcluirContatoViewModel(contato.Id, contato.Nome);
+
+                    return View("Excluir", excluirVM);
+                }
+            }
 
             repositorioContato.Excluir(id);
 
