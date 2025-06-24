@@ -7,6 +7,13 @@
 				<div class="card-body p-md-5">
 					<h3 class="text-center fw-bold">Formulário de Exclusão</h3>
 
+					@if (ViewData.ModelState["Exclusão"]?.Errors.Count > 0)
+					{
+						<div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+							@ViewData.ModelState["Exclusão"]!.Errors.First().ErrorMessage
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					}
 					<p class="mt-4 text-center">Você deseja realmente excluir o contato "@Model.Nome"?</p>
 
 					<form asp-action="Excluir" asp-route-id="@Model.Id">
@@ -20,3 +27,8 @@
 		</div>
 	</div>
 </div>
+
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
