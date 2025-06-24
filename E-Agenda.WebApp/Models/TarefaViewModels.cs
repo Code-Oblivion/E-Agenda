@@ -107,20 +107,24 @@ public class DetalhesTarefaViewModel
 
 public class GerenciarTarefaViewModel
 {
-    DetalhesTarefaViewModel Tarefa { get; set; }
-    public List<SelectListItem> Itens { get; set; }
+    public DetalhesTarefaViewModel Tarefa { get; set; }
+    public List<ItemViewModel> Itens { get; set; }
 
     [Required(ErrorMessage = "O campo \"Titulo\" é obrigatório.")]
     public string Titulo { get; set; }
 
-    public GerenciarTarefaViewModel() { }
-    public GerenciarTarefaViewModel(Tarefa tarefa, List<Item> itens) : this()
+    public GerenciarTarefaViewModel() 
+    {
+        Itens = new List<ItemViewModel>();
+    }
+
+    public GerenciarTarefaViewModel(Tarefa tarefa) : this()
     {
         Tarefa = tarefa.DetalhesVM();
 
-        foreach (var item in itens)
+        foreach (var item in tarefa.Itens)
         {
-            Itens.Add(new SelectListItem(item.Titulo, item.Id.ToString()));
+            Itens.Add(new ItemViewModel(item.Id, item.Titulo, item.status));
         }
     }
 }
